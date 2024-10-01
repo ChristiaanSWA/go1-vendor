@@ -4,8 +4,8 @@ issues.vue
   <div>
     <div :class="['head-layout', { collapsed: isSidebarCollapsed }]">
       <div class="head-content">
-        <header class="border-b bg-white px-5 py-6.5 sm:px-5">
-          <div class="float-left -mt-3">Issue</div>
+        <header class="border-b bg-white px-5 py-6 sm:px-5">
+          <div class="float-left -mt-3 font-medium">Issue</div>
           <div class="float-right -mt-3">
             <Button
               :variant="'solid'"
@@ -24,11 +24,11 @@ issues.vue
         </header>
       </div>
     </div>
-    <div :class="['layout', { collapsed: isSidebarCollapsed }]">
-      <LeftSidebar :isCollapsed="isSidebarCollapsed" @toggle="toggleSidebar" />
-      <div class="main-content">
+    <LeftSidebar :isCollapsed="isSidebarCollapsed" @toggle="toggleSidebar" />
+    <div :class=" ['layout', { collapsed: isSidebarCollapsed }]" class>
+      <div class="main-content ">
  
-        <div class="fiter mb-2" style="display: flex; gap: 10px;">
+        <div class="fiter mb-5" style="display: flex; gap: 10px;">
           <TextInput type="search" size="sm" variant="subtle" placeholder="Name" v-model="filterName" />        
           <FormControl type="select"
             :options="[
@@ -40,7 +40,7 @@ issues.vue
             size="sm" variant="subtle" placeholder="Status" v-model="filterStatus" class="w-52" />        
         </div>
         <ListView
-          class="h-[500px]"
+          class="h-[450px]"
           :columns="columns"
           :rows="paginatedRows"
           :options="{
@@ -66,8 +66,13 @@ issues.vue
                 :label="item"
               />
             </div>
+            <div v-else-if="column.key === 'name'">
+              <span class="text-black text-base" style="max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">
+                {{ item }}
+              </span>
+            </div>
             <div v-else>
-              <span class="font-medium text-gray-700 text-base" style="max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">{{ item }}</span>
+              <span class="font-small text-gray-700 text-base" style="max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">{{ item }}</span>
             </div>
           </template>
         </ListView>

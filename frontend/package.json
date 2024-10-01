@@ -9,16 +9,18 @@
     "copy-html-entry": "cp ../go1_customer/public/frontend/index.html ../go1_customer/www/frontend.html"
   },
   "dependencies": {
+    "chart.js": "^4.4.4",
     "feather-icons": "^4.28.0",
     "frappe-ui": "^0.1.67",
     "vue": "^3.5.4",
+    "vue-chartjs": "^5.3.1",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.0.0",
+    "@vitejs/plugin-vue": "^5.1.4",
     "autoprefixer": "^10.4.2",
     "postcss": "^8.4.5",
     "tailwindcss": "^3.0.15",
-    "vite": "^2.7.2"
+    "vite": "^5.4.8"
   }
 }

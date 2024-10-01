@@ -1,35 +1,41 @@
-<template>
+
+   <template>
 
     <div>
   <!-- {{salesdata.originalData}} -->
         <div :class="['head-layout', { collapsed: isSidebarCollapsed }]">
           <div class="head-content">
-            <header class="border-b bg-white px-5 py-2.5 sm:px-5">
+            <header class="border-b bg-white px-5 py-3.5 font-medium sm:px-5">
               Supplier Quotation
             </header>
-            <div class="grid grid-cols-8 ">
-            <div class="p-1 w-36" v-for="fieldData in filter_data" :key="fieldData.fieldname">
-           
-           <component
-             :is="getComponentType(fieldData)"
-             v-bind="getComponentProps(fieldData)"
-               v-model="field_filters[fieldData.fieldname]"
-            />
-         </div>
-         </div>
+            <!-- {{ field_filters  }} -->
+            <div class="flex justify-between w-1/2 mt-4 ml-4">
+              <div class="p-1 w-36 " v-for="fieldData in filter_data" :key="fieldData.fieldname">
+            
+                <component
+                  :is="getComponentType(fieldData)"
+                  v-bind="getComponentProps(fieldData)"
+                    v-model="field_filters[fieldData.fieldname]"
+                />
+              </div>
+              <div class="mt-1 ml-6">
+            <Button :variant="'subtle'" theme="gray" size="sm" @click="restsetFunction"> Reset</Button>
+           </div>
+            </div>
           </div>
+          
         </div>
         <div :class="['layout', { collapsed: isSidebarCollapsed }]">
           <LeftSidebar :isCollapsed="isSidebarCollapsed" @toggle="toggleSidebar" />
-          <div class="main-content" v-if="columns_data">
+          <div class="main-content" v-if="columns_data && supplier_detail.data" >
             <ListView
-              class="h-[500px]"
+              class="h-[485px]"
               :columns="columns_data"
                :rows="supplier_detail.data"
               :options="{
                 getRowRoute: (row) => ({ name: 'Supplier Detail', params: { id: row.name } }),
                 selectable: true,
-                showTooltip: true,
+                showTooltip: true, 
                 resizeColumn: true,
                 emptyState: {
                   title: 'No records found',
@@ -37,25 +43,57 @@
               }"
               row-key="name"
               @row-click="OpenClick"
-            />
+            >
+            <template #cell="{ item,row, column }">
+              <div v-if="column.key === 'status'">
+                <Badge
+                  v-bind="getStatusTheme(item)"
+                  size="sm"
+                  :label="item"
+                />
+              </div>
+              <div v-else-if="column.key === 'naming_series'">
+                <span class="text-black text-base" style="max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">
+                  {{ item }}
+                </span>
+              </div>
+              <div v-else>
+                <span class="font-small text-gray-700 text-base" style="max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">{{ item }}</span>
+              </div>
+            </template>
+   
+          </ListView>
+          <ListFooter
+          :modelValue="pageLengthCount"
+          :options="{ rowCount: supplier_detail.data.length, totalCount: totalRows }"
+          @update:modelValue="pageLengthCount = $event"
+          @loadMore="supplier_detail.fetch()"
+        />
             <!-- <pagination :rows="rows" @update:paginatedRows="updatePaginatedRows" />  -->
           </div>
         </div>
       </div>
+    
     </template>
     
     <script>
     import LeftSidebar from '@/components/Custom Layout/LeftSidebar.vue'
     import ListView from '@/components/ListView/ListView.vue'
+    import ListFooter from 'frappe-ui/src/components/ListView/ListFooter.vue'
+    import RefreshButton from '@/components/RefreshButton.vue'
     // import Pagination from '@/components/Pagination.vue'
     import { ref, onMounted ,watch,reactive} from 'vue'
-    import { createResource, createListResource,FormControl,Select,DatePicker } from 'frappe-ui'
+    import { createResource, createListResource,FormControl,Select,DatePicker,Badge,Button } from 'frappe-ui'
     import { useRouter } from 'vue-router';
     
     export default {
       components: {
         LeftSidebar,
         ListView,
+        Badge,
+        Button,
+        ListFooter,
+        RefreshButton
         // Pagination
       },
       setup() {
@@ -66,11 +104,14 @@
         const rows = ref([])
         let columns_data = ref([])
         let filter_data = ref([])
+        const pageLengthCount = ref(20);
         let field_filters = reactive({});
-        // const paginatedRows = ref([]) 
+        const paginatedRows = ref([]) 
       supplier_detail = createResource({
       url:'go1_vendor.api.get_supplierquotation',
-      method:'Get',
+      method:'GET',
+      filters:field_filters,
+      limit: pageLengthCount.value,
       auto:true
     })
     supplier_detail.fetch()
@@ -78,13 +119,15 @@
     console.log('supplier',supplier_detail)  
   
   
-      salesdata = createListResource({
-      doctype: 'Supplier Quotation',
-      fields:["*"],
-      auto: true
-      })
-      console.log('data',salesdata)
-      salesdata.fetch()
+    // supplier_detail = createListResource({
+    //   doctype: 'Supplier Quotation',
+    //   fields:["*"],
+    //   filters:field_filters,
+    //   limit: pageLengthCount.value,
+    //   auto: true
+    //   })
+    //   console.log('field_filters --------------------',field_filters)
+    //   supplier_detail.fetch()
   
         order = createResource({
           url: 'go1_vendor.sales.get_supplier',
@@ -148,6 +191,11 @@
             console.error('Row data is invalid:', row)
           }
         }
+        watch(pageLengthCount, (newPageLength) => {
+          console.log("aaaa",newPageLength)
+          supplier_detail.limit = newPageLength;
+          supplier_detail.fetch(); // Re-fetch the data with the updated page length
+        });
     
         // const updatePaginatedRows = (newPaginatedRows) => {
         //   paginatedRows.value = newPaginatedRows
@@ -209,14 +257,38 @@ function getComponentProps(fieldData){
     // console.log("property[fieldData.fieldtype]",fieldData.fieldtype,fieldData.fieldname)
     return property[fieldData.fieldtype]
 }
+function restsetFunction(){
+  console.log('Working on clearning or resteing the field_filters',field_filters)
+  Object.keys(field_filters).forEach((key) => {
+    delete field_filters[key];  
+  });
+  console.log(field_filters)
+  supplier_detail.fetch()
+}
+
+
+const getStatusTheme = (status) => {    
+      switch (status) {
+        case 'Draft':
+          return { theme: "red" };  
+        case 'Overdue':
+          return { theme: "blue" };
+        case 'Cancelled':
+          return { theme: "Green" };  
+        case 'Return':
+          return { theme: "orange" };            
+        default:
+          return { theme: "gray" };
+      }
+    }
     
         onMounted(() => {
-          fetchorder()
+           fetchorder()
         })
         watch(field_filters, (newFilters) => {
   console.log("new",newFilters)
   // Apply filters and fetch data when filters change
-  salesdata.fetch(); // Make sure this fetch uses the updated filters
+  supplier_detail.fetch(); // Make sure this fetch uses the updated filters
  
   // Remove any empty filters
   for (const key in newFilters) {
@@ -228,7 +300,7 @@ function getComponentProps(fieldData){
 }, { deep: true }); // Use deep watch to monitor nested properties
  
 // Fetch initial data
-salesdata.fetch();
+supplier_detail.fetch();
     
         return {
           isSidebarCollapsed,
@@ -238,12 +310,15 @@ salesdata.fetch();
           field_filters,
           getComponentType,
           getComponentProps,
+          restsetFunction,
           // paginatedRows, 
           toggleSidebar,
           OpenClick,
           // updatePaginatedRows,
           order,
-          supplier_detail
+          getStatusTheme,
+          supplier_detail,
+          pageLengthCount,
         }
       },
     }
@@ -264,7 +339,7 @@ salesdata.fetch();
     
     .main-content {
       flex-grow: 1;
-      padding: 1.25rem;
+      padding: 1rem;
       transition: margin-left 0.3s ease;
       margin-left: 220px; /* Default width of sidebar */
     }

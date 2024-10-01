@@ -7,6 +7,7 @@ import App from './App.vue'
 import {
   Button,
   Card,
+  FeatherIcon,
   Input,
   setConfig,
   frappeRequest,
@@ -23,5 +24,6 @@ app.use(resourcesPlugin)
 app.component('Button', Button)
 app.component('Card', Card)
 app.component('Input', Input)
+app.component('FeatherIcon', FeatherIcon)
 
 app.mount('#app')

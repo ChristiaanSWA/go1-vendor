@@ -74,9 +74,24 @@ const routes = [
       component:() => import ('@/pages/Issues Detail.vue')
     },
     {
-      path: '/Addresses/:id',
+      path: '/Addresses',
       name:'Addresses',
       component:() => import ('@/pages/Addresses.vue')
+    },
+    {
+      path: '/Addresses Detail/:id',
+      name:'Addresses Detail',
+      component:() => import ('@/pages/Addresses Detail.vue')
+    },
+    {
+      path: '/New Addresses',
+      name:'New Addresses',
+      component:() => import ('@/pages/New Addresses.vue')
+    },
+    {
+      path: '/Dashboard',
+      name:'Dashboard',
+      component:() => import ('@/pages/Dashboard.vue')
     }
 ]
 

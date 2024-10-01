@@ -1,4 +1,5 @@
 <template>
+
   <div :class="['sidebar', { 'collapsed': isCollapsed }]">
     <Popover v-model="isPopoverActive">
       <template #target="{ togglePopover }">
@@ -6,28 +7,30 @@
           @click="togglePopover" 
           :class="['flex h-12 items-center rounded-md py-2 duration-300 ease-in-out w-52 px-2 hover:bg-gray-200', { 'active': isPopoverActive }]">
           <template v-if="isCollapsed">
-            <Avatar
+            <!-- <Avatar
               class="flex-shrink-0 rounded"
               :shape="'square'"
-              image="http://192.168.0.156:8008/assets/erpnext/images/erpnext-logo.svg"
-              label="EY"
-              size="8"
-            />
+              image="http://192.168.0.156:8081/files/G0-1-Vendor%20portal.png"
+              label="H"
+              size="18"
+            /> -->
+            {{  logo }}
           </template>
           <template v-else>
-            <div style="margin-left:26px">
-              <div class="flex-shrink-0 text-sm duration-300 ease-in-out mr-1 ml-0 w-auto opacity-100" style="float:left;">
-                <Avatar
+            <div style="">
+              <div class="flex-shrink-0 text-sm duration-300 ease-in-out mr-2 ml-0 w-auto opacity-100 " style="float:left;">
+                <!-- <Avatar
                   class="size-8 flex-shrink-0 rounded"
                   :shape="'square'"
-                  image="http://192.168.0.156:8008/assets/erpnext/images/erpnext-logo.svg"
-                  label="EY"
-                  size="md"
+                  image="http://192.168.0.156:8081/files/G0-1-Vendor%20portal.png"
+                  label="H"
+                  size="xl"
                   style="margin-left:-61px"
-                />
+                /> -->
+              <img :src="logo" width="40px"  class="h-10 mr-2">
               </div>
               <div class="flex flex-1 flex-col text-left duration-300 ease-in-out ml-2 w-auto opacity-100" style="float:left;margin-top:-2px">
-                <p class="font-medium" style="margin-left:-15px">Go1 Vendor</p>
+                <p class="font-medium mt-2" style="margin-left:-15px">Go1 Vendor</p>
                 <p style="margin-left:-15px;">{{  logged_users.data }}</p>
 
               </div>
@@ -61,16 +64,20 @@
     @click="handleButtonClick(row.title, row.route)" 
     :variant="'ghost'"
     theme="gray"
-    :class="['navigation-button flex items-center rounded px-2 py-1 text-gray-800 transition hover:bg-gray-100 mt-0.5', { 'active': isActiveButton(row.route) }]">
+    :class="['navigation-button flex items-center rounded px-2 py-1 text-gray-800 transition hover:bg-gray-100 mt-0.5 ', { 'active': isActiveButton(row.route) }]">
     <template v-if="isCollapsed">
-      <FeatherIcon class="w-4" :name="row.icon"/>
+            <FeatherIcon class="w-4 text-black" stroke="black" stroke-width="1" :name="row.icon" />
     </template>
     <template v-else>
-      <div class="flex w-full items-center space-x-2">
-        <div style="float:left"><FeatherIcon class="w-4 text-gray-500" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="2" :name="row.icon"/></div>
-        <div class="flex-shrink-0 text-sm duration-300 ease-in-out ml-2 w-auto opacity-100" style="float:left;">{{ row.title }}</div>
-      </div>
-    </template>
+            <div class="flex w-full items-center space-x-2 ">
+              <div style="float:left">
+                <FeatherIcon class="w-4 text-black " stroke="black" stroke-width="1" :name="row.icon"/>
+              </div>
+              <div class="flex-shrink-0 text-sm duration-300 ease-in-out ml-2 w-auto opacity-100" style="float:left;">
+                {{ row.title }}
+              </div>
+            </div>
+          </template>
   </Button>
 </div>
 </div>
@@ -232,6 +239,9 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const rows = ref([]); 
+    let Vendor_logo=ref([])
+    let logo=ref('')
+    // let Vendorlogo=ref([])
     const username =ref(['loading']);
     
 
@@ -246,7 +256,36 @@ export default {
     cache: ['route','title'],
     auto: true 
   }); 
-   
+
+  //  Vendor_logo= createResource({
+  //   url: 'go1_vendor.sales.get_navbar_logo',
+  //   cache: ['route','title'],
+  //   auto: true
+  // }); 
+  // Vendor_logo.fetch().then((res) =>{
+  //      console.log("gfhj",res)
+  // })
+
+
+
+ const Vendorlogo = async () => {
+        const response = await fetch('/api/method/go1_vendor.sales.get_navbar_logo');
+        const data = await response.json();
+        console.log('API Response:', data.message.app_logo);
+        logo.value =data.message.app_logo
+        console.log("hi",logo)
+  }
+  
+  Vendorlogo();
+ 
+  
+  
+  console.log("logo",Vendor_logo)
+  
+  
+  console.log("usersdaata0----",users.fetch())
+  console.log('dddddd',users.data);
+
     const isActiveButton = (routePath) => {
       return route.path === routePath;
     };
@@ -255,13 +294,17 @@ export default {
       isActiveButton, 
       rows,
       logged_users,
-      dynamicsApp
+      dynamicsApp,
+      Vendor_logo,
+      Vendorlogo,
+      logo
     };
   },
   methods: {
     handleButtonClick(buttonName, routePath) {
       this.setActiveButton(buttonName); 
       if (routePath) {
+        // console.log("PAth",routePath)  
         this.$router.push(routePath); 
       }
     },

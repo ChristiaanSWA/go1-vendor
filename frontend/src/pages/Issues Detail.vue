@@ -4,7 +4,7 @@
     <div :class="['head-layout', { collapsed: isSidebarCollapsed }]">
       <div class="head-content">
         <header
-          class="border-b bg-white px-5 py-6.5 pb-[2.625rem] sm:px-5 mb-12"
+          class="border-b bg-white px-5  pb-[2.625rem] sm:px-5 mb-12"
         >
           <Breadcrumbs :items="breadcrumbsList" class="float-left" />
         </header>
@@ -12,18 +12,18 @@
     </div>
     <div :class="['layout', { collapsed: isSidebarCollapsed }]">
       <LeftSidebar :isCollapsed="isSidebarCollapsed" @toggle="toggleSidebar" />
-      <div class="main-content">
-        <div class="bg-white shadow-md rounded-lg p-6 space-y-6  pb-[2.625rem]">
-          <div
-            class="float-left mb-1 text-9xl font-bold text-gray-800 -mt-2"
-            style="font-size: 1.85rem"
-          >
+      <div class="main-content ">
+
+        <div class="bg-white rounded-md   border  ">
+
+          <div class="float-left p-3 text-9xl font-bold text-gray-800 -mt-2" style="font-size: 1.85rem">
             <p>Issue</p>
             <p class="text-9xl font-bold text-gray-600" style="font-size: 1rem">
               {{ subject }}
             </p>
           </div>
-          <div class="float-right mb-1">
+
+          <div class="float-right p-3 mb-1">
             <Button
               v-if="!isEditing"
               :variant="'solid'"
@@ -35,8 +35,11 @@
               class=""
             />
           </div>
-          <div class="border-b pb-7 pt-10"></div>
-          <div class="p-2">
+
+          <div class="border-b pb-10 pt-13"></div>
+
+
+          <div class="p-5 grid grid-cols-2 gap-10">
             <FormControl
               :type="'text'"
               size="md"
@@ -45,8 +48,9 @@
               :disabled="!isEditing"
               label="Subject"
               v-model="subject"
-              class="mb-5"
+              class="text-base"
             />
+
             <FormControl
               :type="'select'"
               size="md"
@@ -56,8 +60,9 @@
               :disabled="!isEditing"
               label="Status"
               v-model="status"
-              class="mb-5 text-gray-1000 text-base"
+              class="text-base"
             />
+
             <FormControl
               :type="'select'"
               size="md"
@@ -66,18 +71,9 @@
               :disabled="!isEditing"
               label="Customer"
               v-model="customer"
-              class="mb-5"
+              class="text-base"
             />
-            <FormControl
-              :type="'textarea'"
-              size="md"
-              variant="subtle"
-              placeholder="Placeholder"
-              :disabled="!isEditing"
-              label="Description"
-              v-model="description"
-              class="mb-5"
-            />
+
             <FormControl
               type="select"
               size="md"
@@ -87,9 +83,27 @@
               :disabled="!isEditing"
               label="Priority"
               v-model="priority"
-              class="mb-5"
+              class="text-base"
             />
-            <div v-if="isEditing" class="float-right flex gap-4 ">
+            
+          </div>
+
+          <div class="flex p-3">
+
+            <FormControl
+              :type="'textarea'"
+              size="3xl"
+              variant="subtle"
+              placeholder="Placeholder"
+              :disabled="!isEditing"
+              label="Description"
+              v-model="description"
+              class="mb-5 w-full "
+            />
+
+          </div>
+
+          <div v-if="isEditing" class="flex justify-end gap-4 p-3 ">
               <Button
                 :variant="'subtle'"
                 theme="gray"
@@ -106,10 +120,10 @@
                 :disabled="false"
                 @click="submitChanges"
               />
-            </div>
           </div>
  
         </div>
+        
       </div>
     </div>
   </div>

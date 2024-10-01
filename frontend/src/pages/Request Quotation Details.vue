@@ -1,191 +1,221 @@
 <template>
-    <div class="mb-2 space-y-5">
-      <div class="main-content p-5">
-        <div
-            class="flex items-center gap-2 leading-5 first:mt-3 grid grid-cols-1  gap-4 mt-4"
-          >
-            <div class="shadow rounded-md p-5 min-h-72">
-              <div class="text-gray-700 mb-5 ml-2 flex h-7 max-w-fit cursor-pointer items-center gap-2 pl-2 pr-3 text-base font-semibold leading-5">Details:</div>
-              <div
-                class="flex items-center gap-2 px-3 leading-5 first:mt-1 border-b pb-1"
-              >
-                <div class="sm: w-36 shrink-0 text-sm text-gray-600 text-left">
-                   Company Billing Address:
-                </div>
-                <div
-                  class="grid min-h-[18px] flex-1 items-center text-base text-center"
-                >
-                  <p v-html="billing_details"></p>
-                </div>
-              </div>
-              <div
-                class="flex items-center gap-2 px-3 leading-5 first:mt-3 text-center mt-3 border-b pb-1"
-              >
-                <div class="sm: w-36 shrink-0 text-sm text-gray-600 text-left">
-                  Customer Name:
-                </div>
-                <div
-                  class="grid min-h-[18px] flex-1 items-center overflow-hidden text-base text-center"
-                >
-                  {{ company }}
-                </div>
-              </div>
-              <div
-                class="flex items-center gap-2 px-3 leading-5 first:mt-3 text-center mt-3 border-b pb-1"
-              >
-                <div class="sm: w-36 shrink-0 text-sm text-gray-600 text-left">
-                  Date:
-                </div>
-                <div
-                  class="grid min-h-[18px] flex-1 items-center overflow-hidden text-base text-center"
-                >
-                  {{ datevalue }}
-                </div>
-              </div>
-              <div
-                class="flex items-center gap-2 px-3 leading-5 first:mt-3 text-center mt-3 border-b pb-1"
-              >
-                <div class="sm: w-36 shrink-0 text-sm text-gray-600 text-left">
-                  Required Date:
-                </div>
-                <div
-                  class="grid min-h-[18px] flex-1 items-center overflow-hidden text-base text-center"
-                >
-                  {{ requiredate }}
-                </div>
-              </div>
-              <div
-                class="flex items-center gap-2 px-3 leading-5 first:mt-3 text-center mt-3 border-b pb-1"
-              >
-                <div class="sm: w-36 shrink-0 text-sm text-gray-600 text-left">
-                 Billing Address Details
-                </div>
-                <div
-                  class="grid min-h-[18px] flex-1 items-center overflow-hidden text-base text-center"
-                >
-                <p v-html="billing_details"></p>
-                </div>
-              </div>
-              <div
-                class="flex items-center gap-2 px-3 leading-5 first:mt-3 text-center mt-3 border-b pb-1"
-              >
-                <div class="sm: w-36 shrink-0 text-sm text-gray-600 text-left">
-                   status:
-                </div>
-                <div
-                  class="grid min-h-[18px] flex-1 items-center overflow-hidden text-base text-center"
-                >
-                  {{ inputValue }}
-                </div>
-              </div>
-            </div>
-              
-              
+        
+  <div>
+
+    <LeftSidebar :isCollapsed="isSidebarCollapsed" @toggle="toggleSidebar" />
+    
+    <div :class="['head-layout', { collapsed: isSidebarCollapsed }]">
+
+      <div class="head-content">
+        <header class="border-b bg-white p-4 font-medium text-xl">
+            Request Quotation Details
+        </header>
+      </div>
+
+    </div>
+
+    <div class="main-content justify-items-center grid grid-cols-1 py-10">
+
+      
+      <div class="grid grid-cols-1 content-start gap-3 m-2 w-8/12 bg-white border rounded-md pb-5">
+
+        <!-- heading -->
+        <div class="px-3 py-3 border-b">
+
+          <div class="flex  justify-between items-center">
+              <span class="text-xl text-cyan-600 font-semibold">
+                {{ name }} 
+              </span>
+
+              <Badge :variant="'subtle'" :theme="getTheme(inputValue)" size="md" label="Badge">
+                {{ inputValue }}
+              </Badge>
           </div>
 
-      </div>
- 
-      <div :class="['layout', { collapsed: isSidebarCollapsed }]">
-        <LeftSidebar :isCollapsed="isSidebarCollapsed" @toggle="toggleSidebar" />
-        <div class="main-content">
-          <div class="bg-white shadow-md rounded-lg p-6 space-y-6">
-            <!-- Section 1: Form Title -->
-            <div class="border-b pb-4">
-              <h1 class="text-2xl font-bold text-gray-800 float-left">
-                {{ name }}
-              </h1>
-              <Button
-                :variant="'solid'"
-                theme="gray"
-                size="sm"
-                label="Action"
-                :disabled="false"
-                class="float-right mb-4"
-              />
-              <div class="flex justify-end space-x-4 pt-4"></div>
-            </div>
-            <div :class="['flex items-center space-x-2 space-y-2 rounded-md p-2', statusBorColor]">
-              <div :style="{ backgroundColor: statusColor, borderColor: borderColor, borderWidth: borderWidth, borderStyle: 'solid' }" class="status-dot"></div>
-              <span :class="statusColorText">{{ inputValue }}</span>
-            </div>
-           
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead>
-                <tr>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Series</th>
-                  <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
-                  <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                  <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr v-for="(row, index) in itemValue" :key="index">
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ row.item_code }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{{ row.item_name }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">{{ row.schedule_date }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-right">{{ row.qty }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
-      </div>
-      <div class="main-content">
-          <div class="bg-white shadow-md rounded-lg p-6 ">
-            <!-- Section 1: Form Title -->
-            <div class="border-b pb-4">
-              <h1 class="text-2xl font-bold text-gray-800 float-left">
-                {{ name }}
-              </h1>
-              <Button
-                :variant="'solid'"
-                theme="gray"
-                size="sm"
-                label="Action"
-                :disabled="false"
-                class="float-right mb-4"
-              />
-              <div class="flex justify-end space-x-4 pt-4"></div>
-            </div>
-            <div :class="['flex items-center space-x-4 rounded-md p-2 ', statusBorColor]">
-              <div :style="{ backgroundColor: statusColor, borderColor: borderColor, borderWidth: borderWidth, borderStyle: 'solid' }" class="status-dot"></div>
-              <span :class="statusColorText">{{ inputValue }}</span>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            </div>
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead>
-                <tr>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
-                  <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-                  <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">EmailID</th>
-                  <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Send Email</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr v-for="(row, index) in supplierValue" :key="index">
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ row.supplier }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{{ row.contact }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">{{ row.send_email }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-right">{{ row.quote_status }}</td>
-                </tr>
-              </tbody>
-            </table>
+      
+        <!-- details -->
+        <div class="grid grid-cols-1 p-3">
+
+          <div class="mb-5 text-lg font-medium">
+            <h1> Details: </h1>
           </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3 justify-items-stretch text-gray-800">
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Name</span>
+              <span class="text-sm font-semibold">{{ name }}</span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Date</span>
+              <span class="text-sm font-semibold">{{ datevalue }}</span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Required Date</span>
+              <span class="text-sm font-semibold">{{ requiredate }}</span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Company</span>
+              <span class="text-sm font-semibold">{{ company }}</span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Billing Details</span>
+              <span class="text-sm font-semibold" v-html="billing_details"></span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Billing Address</span>
+              <span class="text-sm font-semibold">{{ billing_address }}</span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Input Value</span>
+              <span class="text-sm font-semibold">{{ inputValue }}</span>
+            </div>
+
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Total Value</span>
+              <span class="text-sm font-semibold">{{ totalValue }}</span>
+            </div>
+
+            
+
+
+            
+          </div>
+          
         </div>
+
+        <!-- supplier -->
+        <div class="grid grid-cols-1 " v-if="supplierValue[0]">
+
+          
+
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3 justify-items-stretch text-gray-800">
+
+            
+
+            
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Supplier</span>
+              <span class="text-sm font-semibold">{{ supplierValue[0].supplier }}</span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Contact</span>
+              <span class="text-sm font-semibold">{{ supplierValue[0].contact }}</span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Quote Status</span>
+              <span class="text-sm font-semibold">{{ supplierValue[0].quote_status }}</span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Supplier Name</span>
+              <span class="text-sm font-semibold">{{ supplierValue[0].supplier_name }}</span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Email ID</span>
+              <span class="text-sm font-semibold">{{ supplierValue[0].email_id }}</span>
+            </div>
+
+          
+            
+
+
+          </div>
+
+        </div>
+
+
+
+
+        <!-- items -->
+        <div class="grid grid-cols-1 p-3">
+
+          <div class="mb-5 text-lg font-medium">
+            <h1>Items :</h1>
+          </div>
+
+          <div class="w-full">            
+            <table class="w-full text-xs text-left whitespace-nowrap">
+              <colgroup>
+                  <col>
+                  <col>
+                  <col>
+                  <col>
+                  <col>
+              </colgroup>
+
+              <thead>
+                  <tr class="bg-gray-100">
+                      <th class="p-3 w-1/2 text-md font-normal" >Item code</th>
+                      <th class="p-3 text-md font-normal">Quantity</th>
+                      <th class="p-3 text-md font-normal">UOM</th>
+                      <th class="p-3 text-md font-normal text-center">Warehouse</th>
+                      <th class="p-3 text-md font-normal text-right">Date</th>
+                  </tr>
+              </thead>
+
+              <tbody>
+
+                  <tr v-for="(row, index) in itemValue" :key="index" class="border-b border-gray-200">
+                      <td class="px-3 py-2 w-1/2 text-md font-medium"  >
+                        <p>{{ row.item_code }}</p>
+                      </td>
+                      <td class="px-3 py-2 text-center text-md font-medium">
+                          <p>{{ row.qty }}</p>
+                      </td>
+                      <td class="px-3 py-2 text-md font-medium">
+                          <span>{{ row.uom }}</span>
+                      </td>
+                      <td class="px-3 py-2 text-center text-md font-medium">
+                          <p>{{ row.warehouse }}</p>
+                      </td>
+                      <td class="px-3 py-2 text-right text-md font-medium">
+                          <p>{{ row.schedule_date }}</p>
+                      </td>
+                  </tr>
+
+                  
+
+
+
+              </tbody>
+
+            </table>       
+          </div>
+        
+        </div>
+    
+
       </div>
-  </template>
+
+    </div>
+  </div>
+
+</template>
   
   <script>
   import LeftSidebar from '@/components/Custom Layout/LeftSidebar.vue'
   import { ref, watch, onMounted, computed } from 'vue'
-  import { createResource, Breadcrumbs, Button,FormControl } from 'frappe-ui'
+  import { createResource, Breadcrumbs, Button,FormControl,Badge } from 'frappe-ui'
   import { useRouter, useRoute } from 'vue-router'
   
   export default {
     components: {
       LeftSidebar,
       // Breadcrumbs,
+      Badge,
       FormControl,
       Button,
     },
@@ -222,20 +252,17 @@
           const data = await quote.fetch()
           const QuotationDetails = data.find((items) => items.name === id)
           if (QuotationDetails) {
+            itemValue.value = QuotationDetails.items || []
+            supplierValue.value = QuotationDetails.suppliers || []
+            totalValue.value = QuotationDetails.total
             name.value = QuotationDetails.name
             inputValue.value = QuotationDetails.status
             datevalue.value =   QuotationDetails.transaction_date
             requiredate.value =   QuotationDetails.schedule_date
             company.value=QuotationDetails.company
             billing_details.value=QuotationDetails.billing_address_display
-            billing_address.value=QuotationDetails.billing_address
-
-
-            itemValue.value = QuotationDetails.items || []
-            supplierValue.value = QuotationDetails.suppliers || []
-            totalValue.value = QuotationDetails.total
           }
-          console.log('quote1', QuotationDetails)
+          console.log('quote1', QuotationDetails.supplier)
         } catch (error) {
           console.error('Error fetching order details:', error)
         }
@@ -309,6 +336,21 @@
             return 'border-gray-300'
         }
       })
+
+
+      const getTheme = (inputValue) => {
+      if (inputValue === 'Cancelled') {
+        return 'green';
+      } else if (inputValue === 'Completed') {
+        return 'blue';
+      } else if (inputValue === 'Draft') {
+        return 'red';
+      } else if (inputValue === 'Closed') {
+        return 'orange';
+      } else {
+        return 'gray';
+      }
+    }
   
       // Dynamically set border width for the status dot
       const borderWidth = computed(() => 'auto')
@@ -324,11 +366,11 @@
         statusColor,
         statusColorText,
         statusBorColor,
+        getTheme,
         borderWidth,
         quote,
         supplierValue,
         company,
-        billing_address,
         billing_details,
         datevalue,
         requiredate,

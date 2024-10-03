@@ -88,11 +88,11 @@ const routes = [
       name:'New Addresses',
       component:() => import ('@/pages/New Addresses.vue')
     },
-    {
-      path: '/Dashboard',
-      name:'Dashboard',
-      component:() => import ('@/pages/Dashboard.vue')
-    }
+    // {
+    //   path: '/Dashboard',
+    //   name:'Dashboard',
+    //   component:() => import ('@/pages/Dashboard.vue')
+    // }
 ]
 
 let router = createRouter({

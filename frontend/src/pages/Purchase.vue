@@ -116,7 +116,7 @@
           auto:true
         })
         supplier_detail.fetch()
-        console.log('supplier',supplier_detail)
+      
 
       // supplier_detail = createListResource({
       // doctype: 'Purchase Order',
@@ -148,7 +148,7 @@
                     width:fielddata.width
               })
 
-              console.log('coldata',columns_data)
+             
             }
             if(fielddata.in_standard_filter == 1){
               // console.log("PPPPPPPPPPPP+++++++++++++++_______________",fielddata)
@@ -158,10 +158,7 @@
            
           }
         } )
-        //  console.log('columns',columns_data)
-        
-        // console.log('data',order)
-        
+      
 
     
         // const fetchorder = async () => {
@@ -185,7 +182,7 @@
         const router = useRouter()
     
         const OpenClick = (row) => {
-          console.log('Row clicked:', row)
+         
           if (row && row.name) {
             router.push({ name: 'Purchase Detail', params: { id: row.name } })
           } else {
@@ -193,7 +190,7 @@
           }
         }
         watch(pageLengthCount, (newPageLength) => {
-          console.log("aaaa",newPageLength)
+    
           supplier_detail.limit = newPageLength;
           supplier_detail.fetch(); // Re-fetch the data with the updated page length
         });
@@ -210,7 +207,7 @@
   let formatOptions = []
   if (options){
     const optionsArray = options.split("\n")
-    console.log('options',optionsArray)
+    
     for (let options of optionsArray){
     formatOptions.push({
       label: options,
@@ -221,16 +218,16 @@
 return formatOptions
 }
 function restsetFunction(){
-  console.log('Working on clearning or resteing the field_filters',field_filters)
+ 
   Object.keys(field_filters).forEach((key) => {
     delete field_filters[key];  
   });
-  console.log(field_filters)
+ 
   supplier_detail.fetch()
 }
 
   function getComponentType(fieldData){
-// console.log("sss",fieldData.fieldtype,fieldData.options)
+
     const components = {
         Select:Select,
         Color: FormControl,
@@ -272,14 +269,14 @@ function restsetFunction(){
     return property[fieldData.fieldtype]
   }
   watch(field_filters, (newFilters) => {
-    console.log("new",newFilters)
+  
     // Apply filters and fetch data when filters change
     supplier_detail.fetch(); // Make sure this fetch uses the updated filters
   
     // Remove any empty filters
     for (const key in newFilters) {
       if (newFilters[key] === null || newFilters[key] === '') {
-        console.log("deleted ---- the key ")
+      
         delete newFilters[key]; // Remove empty filter keys
       }
     }

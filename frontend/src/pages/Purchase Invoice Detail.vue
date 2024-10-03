@@ -55,10 +55,7 @@
               <span class="text-sm font-semibold">{{ datevalue }}</span>
             </div>
 
-            <div class="flex flex-col gap-1">
-              <span class="text-gray-600 text-sm">Required Date</span>
-              <span class="text-sm font-semibold">{{ requiredate }}</span>
-            </div>
+          
 
             <div class="flex flex-col gap-1">
               <span class="text-gray-600 text-sm">Company</span>
@@ -67,7 +64,7 @@
 
             <div class="flex flex-col gap-1">
               <span class="text-gray-600 text-sm">Billing Details</span>
-              <span class="text-sm font-semibold">{{ billing_details }}</span>
+              <span class="text-sm font-semibold" v-html="billing_details"></span>
             </div>
 
             <div class="flex flex-col gap-1">
@@ -101,10 +98,7 @@
               <span class="text-sm font-semibold">{{ supplieraddress }}</span>
             </div>
 
-            <div class="flex flex-col gap-1">
-              <span class="text-gray-600 text-sm">Address</span>
-              <span class="text-sm font-semibold" v-html="address"></span>
-            </div>
+            
 
             <div class="flex flex-col gap-1">
               <span class="text-gray-600 text-sm">Shipping Address</span>
@@ -135,7 +129,18 @@
               <span class="text-gray-600 text-sm">Allowed Currency</span>
               <span class="text-sm font-semibold">{{ allowedcurrency }}</span>
             </div>
+
+            <div class="flex flex-col gap-1">
+              <span class="text-gray-600 text-sm">Address</span>
+              <span class="text-sm font-semibold" v-html="address"></span>
+            </div>
+
+
           </div>
+         
+          
+
+          
           
         </div>
 
@@ -197,28 +202,76 @@
 
         <div class="grid grid-cols-1 p-3">
 
-          <div class="mb-5 text-lg font-medium">
-            <h1>Taxes</h1>
-          </div>
+          
 
           <div class="grid grid-cols-1  gap-8  md:grid-cols-2">
 
-            <div class="flex flex-col w-full gap-3" v-for="(row, index) in supplierValue" :key="index">
-              <div class="flex justify-between"><span class="text-gray-600 text-sm font-medium">Type</span><span class="text-sm font-medium">{{ row.charge_type }}</span></div>
-              <div class="flex justify-between"><span class="text-gray-600 text-sm font-medium">Account head</span><span class="text-sm font-medium">{{ row.account_head }}</span></div>
-              <div class="flex justify-between"><span class="text-gray-600 text-sm font-medium">Cost Center</span><span class="text-sm font-medium">{{ row.cost_center }}</span></div>
-            </div>
+            <div></div>
 
-            <div class="flex flex-col w-full gap-3" v-for="(row, index) in supplierValue" :key="index">
-              <div class="flex justify-between items-center"><span class="text-gray-600 text-sm font-medium">Base Amount</span><span class="text-sm font-medium">{{ row.base_tax_amount }}</span></div>
-              <div class="flex justify-between items-center"><span class="text-gray-600 text-sm font-medium">Tax Amount</span><span class="text-sm font-medium">{{ row.tax_amount }}</span></div>
-              <div class="flex justify-between items-center"><span class="text-gray-600 text-sm font-medium">Total</span><span class="text-sm font-medium">{{ row.total }}</span></div>
+            <div class="flex flex-col w-full gap-3" >
+              <div class="flex justify-between items-center"><span class="text-gray-600 text-sm font-medium">Tax Amount</span><span class="text-sm font-medium">{{ total_taxes }}</span></div>
+              <div class="flex justify-between items-center"><span class="text-gray-600 text-sm font-medium">Total</span><span class="text-sm font-medium">{{ total }}</span></div>
             </div>
 
           </div>
 
 
           
+        </div>
+
+
+        <div class="grid grid-cols-1">
+
+          
+          <div class="w-full">            
+            <table class="w-full text-xs text-left whitespace-nowrap">
+              <colgroup>
+                  <col>
+                  <col>
+                  <col>
+                  <col>
+                  <col>
+              </colgroup>
+
+              <thead>
+                  <tr class="bg-gray-100">
+                      <th class="p-3 w-1/2 text-md font-normal" >Type</th>
+                      <th class="p-3 text-md font-normal">Account Head</th>
+                      <th class="p-3 text-md font-normal">Tax Rate</th>
+                      <th class="p-3 text-md font-normal">Amount</th>
+                      <th class="p-3 text-md font-normal text-right">Total</th>
+                  </tr>
+              </thead>
+
+              <tbody>
+
+                  <tr v-for="(row, index) in supplierValue" :key="index" class="border-b border-gray-200">
+                      <td class="px-3 py-2 w-1/2 text-md font-medium"  >
+                        <p>{{ row.charge_type }}</p>
+                      </td>
+                      <td class="px-3 py-2 text-center text-md font-medium">
+                          <p>{{ row.account_head }}</p>
+                      </td>
+                      <td class="px-3 py-2 text-md font-medium">
+                          <span>{{ row.rate }}</span>
+                      </td>
+                      <td class="px-3 py-2 text-center text-md font-medium">
+                          <p>{{ row.tax_amount }}</p>
+                      </td>
+                      <td class="px-3 py-2 text-right text-md font-medium">
+                          <p>{{ row.total }}</p>
+                      </td>
+                  </tr>
+
+                  
+
+
+
+              </tbody>
+
+            </table>       
+          </div>
+
         </div>
 
 
@@ -269,6 +322,9 @@ export default {
     const pocode = ref([])
     const poreference = ref([])
     const allowedcurrency = ref([])
+    const total = ref('')
+    const total_taxes = ref('')
+    const total_advance = ref('')
     // const Paymentterms = ref("")
     const taxnumber = ref("")
     const inovice_bill_data = ref("")
@@ -300,6 +356,7 @@ export default {
           supplierValue.value = QuotationDetails.taxes || []
           totalValue.value = QuotationDetails.total
           inovice_bill_data.value = QuotationDetails.bill_date
+          total.value = QuotationDetails.totals
           
           name.value = QuotationDetails.name
           inputValue.value = QuotationDetails.status
@@ -317,8 +374,14 @@ export default {
           pocode.value = QuotationDetails.supplier_name
           poreference.value = QuotationDetails.bill_no
           sup_address_line1.value = QuotationDetails.sup_address_line1
-          console.log('dddeffff',sup_address_line1)
-          // Paymentterms.value = QuotationDetails.payment_terms_template
+
+          total.value = QuotationDetails.total
+          total_taxes.value = QuotationDetails.total_taxes_and_charges
+          total_advance.value = QuotationDetails.total_advance
+
+          console.log(QuotationDetails.total)
+          console.log(QuotationDetails)
+            // Paymentterms.value = QuotationDetails.payment_terms_template
           
         }
         
@@ -414,6 +477,9 @@ export default {
     }
 
     return {
+      total,
+      total_taxes,
+      total_advance,
       isSidebarCollapsed,
       name,
       inputValue,

@@ -14,7 +14,8 @@
               label="H"
               size="18"
             /> -->
-            {{  logo }}
+            <!-- <img :src="logo" width="40px"  class=" mr-2"> -->
+            <Avatar :shape="'square'" image="/G0-1-Vendor portal.png" label="EY" size="xl" />
           </template>
           <template v-else>
             <div style="">
@@ -27,7 +28,8 @@
                   size="xl"
                   style="margin-left:-61px"
                 /> -->
-              <img :src="logo" width="40px"  class="h-10 mr-2">
+              <!-- <img :src="logo" width="40px"  class="h-10 mr-2"> -->
+              <Avatar :shape="'square'" image="/G0-1-Vendor portal.png" label="EY" size="2xl" class="mr-2" />
               </div>
               <div class="flex flex-1 flex-col text-left duration-300 ease-in-out ml-2 w-auto opacity-100" style="float:left;margin-top:-2px">
                 <p class="font-medium mt-2" style="margin-left:-15px">Go1 Vendor</p>
@@ -82,118 +84,7 @@
 </div>
 </div>
 
-    <!-- Navigation Buttons -->
-    <!-- <Button 
-      @click="handleButtonClick('quotations','/Quotations')" 
-      :variant="'ghost'"
-      theme="gray"
-      :class="['navigation-button flex items-center rounded px-2 py-1 text-gray-800 transition hover:bg-gray-100 mt-0.5', { 'active': isActiveButton('/Quotations') }]">
-      <template v-if="isCollapsed">
-        <FeatherIcon class="w-4" name="book"/>
-      </template>
-      <template v-else>
-        <div class="flex w-full items-center space-x-2">
-          <div style="float:left"><FeatherIcon class="w-4 text-gray-500" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="2" name="book"/></div>
-          <div class="flex-shrink-0 text-sm duration-300 ease-in-out ml-2 w-auto opacity-100" style="float:left;">Quotations</div>
-        </div>
-      </template>
-    </Button>
-
-    <Button 
-      @click="handleButtonClick('orders','/Orders')" 
-      :variant="'ghost'"
-      theme="gray"
-      :class="['navigation-button flex items-center rounded px-2 py-1 text-gray-800 transition hover:bg-gray-100 mt-0.5', { 'active': isActiveButton('/Orders') }]">
-      <template v-if="isCollapsed">
-        <FeatherIcon class="w-4" name="shopping-cart"/>
-      </template>
-      <template v-else>
-        <div class="flex w-full items-center space-x-2">
-          <div style="float:left"><FeatherIcon class="w-4 text-gray-500" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="2" name="shopping-cart"/></div>
-          <div class="flex-shrink-0 text-sm duration-300 ease-in-out ml-2 w-auto opacity-100" style="float:left;">Orders</div>
-        </div>
-      </template>
-    </Button>
-
-    <Button 
-      @click="handleButtonClick('invoices','/Invoices')" 
-      :variant="'ghost'"
-      theme="gray"
-      :class="['navigation-button flex items-center rounded px-2 py-1 text-gray-800 transition hover:bg-gray-100 mt-0.5', { 'active': isActiveButton('/Invoices') }]">
-      <template v-if="isCollapsed">
-        <FeatherIcon class="w-4" name="file"/>
-      </template>
-      <template v-else>
-        <div class="flex w-full items-center space-x-2">
-          <div style="float:left"><FeatherIcon class="w-4 text-gray-500" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="2" name="file"/></div>
-          <div style="float:left;margin-left:10px">Invoices</div>
-        </div>
-      </template>
-    </Button>
-
-    <Button 
-      @click="handleButtonClick('shipments','/Shipments')" 
-      :variant="'ghost'"
-      theme="gray"
-      :class="['navigation-button flex items-center rounded px-2 py-1 text-gray-800 transition hover:bg-gray-100 mt-0.5', { 'active': isActiveButton('/Shipments') }]">
-      <template v-if="isCollapsed">
-        <FeatherIcon class="w-4" name="package"/>
-      </template>
-      <template v-else>
-        <div class="flex w-full items-center space-x-2">
-          <div style="float:left"><FeatherIcon class="w-4 text-gray-500" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="2" name="package"/></div>
-          <div style="float:left;margin-left:10px">Shipments</div>
-        </div>
-      </template>
-    </Button>
-
-    <Button 
-      @click="handleButtonClick('issues','/Issues')" 
-      :variant="'ghost'"
-      theme="gray"
-      :class="['navigation-button flex items-center rounded px-2 py-1 text-gray-800 transition hover:bg-gray-100 mt-0.5', { 'active': isActiveButton('/Issues') }]">
-      <template v-if="isCollapsed">
-        <FeatherIcon class="w-4" name="help-circle"/>
-      </template>
-      <template v-else>
-        <div class="flex w-full items-center space-x-2">
-          <div style="float:left"><FeatherIcon class="w-4 text-gray-500" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="2" name="help-circle"/></div>
-          <div style="float:left;margin-left:10px">Issues</div>
-        </div>
-      </template>
-    </Button>
-
-    <Button 
-      @click="handleButtonClick('addresses','/Addresses')" 
-      :variant="'ghost'"
-      theme="gray"
-      :class="['navigation-button flex items-center rounded px-2 py-1 text-gray-800 transition hover:bg-gray-100 mt-0.5', { 'active': isActiveButton('/Addresses') }]">
-      <template v-if="isCollapsed">
-        <FeatherIcon class="w-4" name="home"/>
-      </template>
-      <template v-else>
-        <div class="flex w-full items-center space-x-2">
-          <div style="float:left"><FeatherIcon class="w-4 text-gray-500" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="2" name="home"/></div>
-          <div style="float:left;margin-left:10px">Addresses</div>
-        </div>
-      </template>
-    </Button>
-
-    <Button 
-      @click="handleButtonClick('material_request','/Material Request')" 
-      :variant="'ghost'"
-      theme="gray"
-      :class="['navigation-button flex items-center rounded px-2 py-1 text-gray-800 transition hover:bg-gray-100 mt-0.5', { 'active': isActiveButton('/Material Request') }]">
-      <template v-if="isCollapsed">
-        <FeatherIcon class="w-4" name="file-text"/>
-      </template>
-      <template v-else>
-        <div class="flex w-full items-center space-x-2">
-          <div style="float:left"><FeatherIcon class="w-4 text-gray-500" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="2" name="file-text"/></div>
-          <div style="float:left;margin-left:10px">Material Request</div>
-        </div>
-      </template>
-    </Button> -->
+   
 
     <!-- Toggle Sidebar Button -->
     <Button @click="$emit('toggle')" class="toggle-button-2">

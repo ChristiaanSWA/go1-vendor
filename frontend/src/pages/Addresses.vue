@@ -1,4 +1,5 @@
  <template>
+
   <div>
     <div :class="['head-layout', { collapsed: isSidebarCollapsed }]">
       <div class="head-content">
@@ -54,7 +55,7 @@
         <ListView
           class="h-[455px]"
           :columns="columns"
-          :rows="paginatedRows"
+          :rows="address.data"
           :options="{
             getRowRoute: (row) => ({
               name: 'Addresses Detail',
@@ -78,8 +79,13 @@
                 :label="item"
               />
             </div>
+            <div v-else-if="column.key === 'name'">
+                  <span class="text-black text-base" style="max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">
+                    {{ item }}
+                  </span>
+                </div>
             <div v-else>
-              <span class="font-medium text-gray-700 text-base" style="max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">{{ item }}</span>
+              <span class="font-small text-gray-700 text-base" style="max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">{{ item }}</span>
             </div>
           </template>
         </ListView>
@@ -114,6 +120,8 @@ export default {
     const rows = ref([])
     const paginatedRows = ref([])
     const isLoading = ref(false)
+    let address=ref([])
+    // let data=ref([])
     const columns = ref([
       { label: 'Name', key: 'name', width: '250px' },
       { label: 'Address', key: 'address_type', width: '200px' },
@@ -122,19 +130,19 @@ export default {
       { label: 'Postal Code', key: 'pincode', width: '200px' },
     ])
  
-    const address = createResource({
+     address = createResource({
       url: 'go1_vendor.api.get_address',
       method: 'get',
+      auto:true
     })
-    console.log('address', address)
+  
     const fetchaddress = async () => {
       try {
         isLoading.value = true
         const data = await address.fetch()
-        rows.value = data.map((row) => ({
-          ...row,
-        }))
-        console.log('Fetched data:', rows.value)
+       
+        
+      
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -142,7 +150,7 @@ export default {
         isLoading.value = false
       }
     }
- 
+   
      const reload = () => {
       fetchaddress()
     }
@@ -158,7 +166,7 @@ export default {
     }
  
     const OpenClick = (row) => {
-      console.log('Row clicked:', row)
+  
       if (row && row.name) {
         router.push({ name: 'Addresses Detail', params: { id: row.name } })
       } else {
@@ -206,7 +214,7 @@ export default {
  
  
     const getaddress_typeTheme = (address_type) => {
-      console.log('address_type:', address_type)
+     
       switch (address_type) {
         case 'Shipping':
           return { theme: 'red' }
@@ -244,6 +252,8 @@ export default {
       getaddress_typeTheme,
       reload,
       isLoading,
+      address
+    
     }
   },
 }

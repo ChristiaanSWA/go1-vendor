@@ -347,5 +347,4 @@ def get_address():
             if link['link_name'] in my_data:
                 address_data.append(address)
  
-    return address_data 
- 
+    return address_list

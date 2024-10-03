@@ -134,7 +134,7 @@
         
       })
       supplier_detail.fetch()
-      console.log('supplier',supplier_detail)
+    
 
       order.fetch().then((res) =>{
         const field = res.fields
@@ -166,9 +166,7 @@
           }
         }
       } )
-      //  console.log('columns',columns_data)
       
-      // console.log('data',order)
       
   
       const fetchorder = async () => {
@@ -181,8 +179,7 @@
             item_name: row.items.length > 0 ? row.items[0].item_name : 'No items',
           }))
           }
-          
-          console.log('Fetched data:', rows.value)
+        
         } catch (error) {
           // console.error('Error fetching data:', error)
         }
@@ -195,7 +192,7 @@
       const router = useRouter()
   
       const OpenClick = (row) => {
-        console.log('Row clicked:', row)
+   
         if (row && row.name) {
           router.push({ name: 'Purchase Invoice Detail', params: { id: row.name } })
         } else {
@@ -216,7 +213,7 @@ function getOptions(options){
 let formatOptions = []
 if (options){
   const optionsArray = options.split("\n")
-  // console.log('options',optionsArray)
+ 
   for (let options of optionsArray){
   formatOptions.push({
     label: options,
@@ -227,15 +224,15 @@ if (options){
 return formatOptions
 }
 function restsetFunction(){
-            console.log('Working on clearning or resteing the field_filters',field_filters)
+           
             Object.keys(field_filters).forEach((key) => {
               delete field_filters[key];  
             });
-            console.log(field_filters)
+           
             supplier_detail.fetch()
           }
 function getComponentType(fieldData){
-// console.log("sss",fieldData.fieldtype,fieldData.options)
+
   const components = {
       Select:Select,
       Color: FormControl,
@@ -280,24 +277,22 @@ function getComponentProps(fieldData){
         fetchorder()
       })
 watch(field_filters, (newFilters) => {
-console.log("new",newFilters)
-// Apply filters and fetch data when filters change
- // Make sure this fetch uses the updated filters
+
+
  supplier_detail.fetch()
- console.log("supplier_detail supplier_detail ",supplier_detail)
+ 
  // Remove any empty filters
  for (const key in newFilters) {
    if (newFilters[key] === null || newFilters[key] === '') {
-     console.log("deleted ---- the key ")
+  
      delete newFilters[key]; // Remove empty filter keys
     }
   }
-  console.log('salesdata',JSON.stringify(field_filters)) 
+  
 
 }, { deep: true }); 
 // Use deep watch to monitor nested properties
-console.log("Functionis called and rendering ",field_filters)
-// supplier_detail.fetch()
+
 
 
 

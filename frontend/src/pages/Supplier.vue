@@ -18,7 +18,7 @@
                     v-model="field_filters[fieldData.fieldname]"
                 />
               </div>
-              <div class="mt-1 ml-6">
+              <div class="mt-1 ml-6 justify-items-end">
             <Button :variant="'subtle'" theme="gray" size="sm" @click="restsetFunction"> Reset</Button>
            </div>
             </div>
@@ -52,7 +52,7 @@
                   :label="item"
                 />
               </div>
-              <div v-else-if="column.key === 'naming_series'">
+              <div v-else-if="column.key === 'supplier'">
                 <span class="text-black text-base" style="max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">
                   {{ item }}
                 </span>
@@ -116,7 +116,7 @@
     })
     supplier_detail.fetch()
 
-    console.log('supplier',supplier_detail)  
+  
   
   
     // supplier_detail = createListResource({
@@ -149,18 +149,16 @@
                     key:fielddata.fieldname,
                     width:fielddata.width
               })
-              console.log('coldata',columns_data)
+              
             }
             if(fielddata.in_standard_filter == 1){
-              console.log("PPPPPPPPPPPP+++++++++++++++_______________",fielddata)
+            
               filter_data.value.push(fielddata)
 
             }
           }
         } )
-         console.log('columns',columns_data)
-        
-        console.log('data',order)
+         
         
     
         const fetchorder = async () => {
@@ -171,7 +169,7 @@
               total: String(row.total),
               item_name: row.items.length > 0 ? row.items[0].item_name : 'No items',
             }))
-            console.log('Fetched data:', rows.value)
+            
           } catch (error) {
             console.error('Error fetching data:', error)
           }
@@ -184,7 +182,7 @@
         const router = useRouter()
     
         const OpenClick = (row) => {
-          console.log('Row clicked:', row)
+         
           if (row && row.name) {
             router.push({ name: 'Supplier Detail', params: { id: row.name } })
           } else {
@@ -192,7 +190,7 @@
           }
         }
         watch(pageLengthCount, (newPageLength) => {
-          console.log("aaaa",newPageLength)
+        
           supplier_detail.limit = newPageLength;
           supplier_detail.fetch(); // Re-fetch the data with the updated page length
         });
@@ -205,7 +203,7 @@
   let formatOptions = []
   if (options){
     const optionsArray = options.split("\n")
-    console.log('options',optionsArray)
+ 
     for (let options of optionsArray){
     formatOptions.push({
       label: options,
@@ -258,11 +256,11 @@ function getComponentProps(fieldData){
     return property[fieldData.fieldtype]
 }
 function restsetFunction(){
-  console.log('Working on clearning or resteing the field_filters',field_filters)
+  
   Object.keys(field_filters).forEach((key) => {
     delete field_filters[key];  
   });
-  console.log(field_filters)
+ 
   supplier_detail.fetch()
 }
 
@@ -286,14 +284,14 @@ const getStatusTheme = (status) => {
            fetchorder()
         })
         watch(field_filters, (newFilters) => {
-  console.log("new",newFilters)
+ 
   // Apply filters and fetch data when filters change
   supplier_detail.fetch(); // Make sure this fetch uses the updated filters
  
   // Remove any empty filters
   for (const key in newFilters) {
     if (newFilters[key] === null || newFilters[key] === '') {
-      console.log("deleted ---- the key ")
+      
       delete newFilters[key]; // Remove empty filter keys
     }
   }

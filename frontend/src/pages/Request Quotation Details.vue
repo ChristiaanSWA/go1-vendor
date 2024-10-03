@@ -14,7 +14,7 @@
 
     </div>
 
-    <div class="main-content justify-items-center grid grid-cols-1 py-10">
+    <div class="main-content justify-items-center grid grid-cols-1 py-10 h-[550px]">
 
       
       <div class="grid grid-cols-1 content-start gap-3 m-2 w-8/12 bg-white border rounded-md pb-5">
@@ -37,9 +37,7 @@
         <!-- details -->
         <div class="grid grid-cols-1 p-3">
 
-          <div class="mb-5 text-lg font-medium">
-            <h1> Details: </h1>
-          </div>
+          
 
           <div class="grid grid-cols-2 md:grid-cols-3 gap-3 justify-items-stretch text-gray-800">
 
@@ -53,10 +51,7 @@
               <span class="text-sm font-semibold">{{ datevalue }}</span>
             </div>
 
-            <div class="flex flex-col gap-1">
-              <span class="text-gray-600 text-sm">Required Date</span>
-              <span class="text-sm font-semibold">{{ requiredate }}</span>
-            </div>
+            
 
             <div class="flex flex-col gap-1">
               <span class="text-gray-600 text-sm">Company</span>
@@ -74,29 +69,18 @@
             </div>
 
             <div class="flex flex-col gap-1">
-              <span class="text-gray-600 text-sm">Input Value</span>
+              <span class="text-gray-600 text-sm">Status</span>
               <span class="text-sm font-semibold">{{ inputValue }}</span>
             </div>
-
-
-            <div class="flex flex-col gap-1">
-              <span class="text-gray-600 text-sm">Total Value</span>
-              <span class="text-sm font-semibold">{{ totalValue }}</span>
-            </div>
-
-            
-
-
             
           </div>
           
         </div>
 
         <!-- supplier -->
-        <div class="grid grid-cols-1 " v-if="supplierValue[0]">
+        <div class="grid grid-cols-1 p-3" v-if="supplierValue[0]">
 
-          
-
+        
           <div class="grid grid-cols-2 md:grid-cols-3 gap-3 justify-items-stretch text-gray-800">
 
             
@@ -136,15 +120,10 @@
 
         </div>
 
-
-
-
         <!-- items -->
-        <div class="grid grid-cols-1 p-3">
+        <div class="grid grid-cols-1 ">
 
-          <div class="mb-5 text-lg font-medium">
-            <h1>Items :</h1>
-          </div>
+      
 
           <div class="w-full">            
             <table class="w-full text-xs text-left whitespace-nowrap">
@@ -234,6 +213,9 @@
       const itemValue = ref([])
       const totalValue = ref([])
       const supplierValue = ref([])
+      const total = ref('') 
+      const total_taxes = ref('')
+      const total_advance = ref('')
       const quote = createResource({
         url: 'go1_vendor.sales.get_requestquotation',
         method: 'get',
@@ -261,8 +243,9 @@
             requiredate.value =   QuotationDetails.schedule_date
             company.value=QuotationDetails.company
             billing_details.value=QuotationDetails.billing_address_display
+            
           }
-          console.log('quote1', QuotationDetails.supplier)
+         
         } catch (error) {
           console.error('Error fetching order details:', error)
         }

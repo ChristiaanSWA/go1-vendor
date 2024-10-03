@@ -115,14 +115,14 @@ export default {
       url: 'go1_vendor.sales.get_issues',
       method: 'get',
     })
-    console.log('issues', issues)
+   
     const fetchissues = async () => {
       try {
         const data = await issues.fetch()
         rows.value = data.map((row) => ({
           ...row,
         }))
-        console.log('Fetched data:', rows.value)
+      
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -139,7 +139,7 @@ export default {
     }
  
     const OpenClick = (row) => {
-      console.log('Row clicked:', row)
+   
       if (row && row.name) {
         router.push({ name: 'Issues Detail', params: { id: row.name } })
       } else {
@@ -163,7 +163,7 @@ export default {
  
    
     const getStatusTheme = (status) => {  
-      console.log('Status:',status)  
+     
       switch (status) {
         case 'Open':
           return { theme: "red" };  

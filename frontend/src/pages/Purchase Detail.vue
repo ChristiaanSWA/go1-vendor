@@ -60,12 +60,6 @@
               <span class="text-sm font-semibold">{{ requiredate }}</span>
             </div>
 
-
-            <div class="flex flex-col gap-1">
-              <span class="text-gray-600 text-sm">Company</span>
-              <span class="text-sm font-semibold">{{ company }}</span>
-            </div>
-
             <div class="flex flex-col gap-1">
               <span class="text-gray-600 text-sm">Total Value</span>
               <span class="text-sm font-semibold">{{ totalValue }}</span>
@@ -143,22 +137,16 @@
         
         <div class="grid grid-cols-1 p-3">
 
-          <div class="mb-5 text-lg font-medium">
-            <h1>Taxes</h1>
-          </div>
-
+          
           <div class="grid grid-cols-1  gap-10  md:grid-cols-2">
 
-            <div class="flex flex-col w-full gap-3" v-for="(row, index) in supplierValue" :key="index">
-              <div class="flex justify-between"><span class="text-gray-600 text-sm font-medium">Type</span><span class="text-sm font-medium">{{ row.charge_type }}</span></div>
-              <div class="flex justify-between"><span class="text-gray-600 text-sm font-medium">Account head</span><span class="text-sm font-medium">{{ row.account_head }}</span></div>
-              <div class="flex justify-between"><span class="text-gray-600 text-sm font-medium">Cost Center</span><span class="text-sm font-medium">{{ row.cost_center }}</span></div>
+            <div>
+            
             </div>
 
-            <div class="flex flex-col w-full gap-3" v-for="(row, index) in supplierValue" :key="index">
-              <div class="flex justify-between"><span class="text-gray-600 text-sm font-medium">Base Amount</span><span class="text-sm font-medium">{{ row.base_tax_amount }}</span></div>
-              <div class="flex justify-between"><span class="text-gray-600 text-sm font-medium">Tax Amount</span><span class="text-sm font-medium">{{ row.tax_amount }}</span></div>
-              <div class="flex justify-between"><span class="text-gray-600 text-sm font-medium">Total</span><span class="text-sm font-medium">{{ row.total }}</span></div>
+            <div class="flex flex-col w-full gap-3" >
+              <div class="flex justify-between items-center"><span class="text-gray-600 text-sm font-medium">Tax Amount</span><span class="text-sm font-medium">{{ total_taxes }}</span></div>
+              <div class="flex justify-between items-center"><span class="text-gray-600 text-sm font-medium">Total</span><span class="text-sm font-medium">{{ total }}</span></div>
             </div>
 
           </div>
@@ -166,6 +154,61 @@
 
           
         </div> 
+
+
+        <div class="grid grid-cols-1">
+
+          
+          <div class="w-full">            
+            <table class="w-full text-xs text-left whitespace-nowrap">
+              <colgroup>
+                  <col>
+                  <col>
+                  <col>
+                  <col>
+                  <col>
+              </colgroup>
+
+              <thead>
+                  <tr class="bg-gray-100">
+                      <th class="p-3 w-1/2 text-md font-normal" >Type</th>
+                      <th class="p-3 text-md font-normal">Account Head</th>
+                      <th class="p-3 text-md font-normal">Tax Rate</th>
+                      <th class="p-3 text-md font-normal">Amount</th>
+                      <th class="p-3 text-md font-normal text-right">Total</th>
+                  </tr>
+              </thead>
+
+              <tbody>
+
+                  <tr v-for="(row, index) in supplierValue" :key="index" class="border-b border-gray-200">
+                      <td class="px-3 py-2 w-1/2 text-md font-medium"  >
+                        <p>{{ row.charge_type }}</p>
+                      </td>
+                      <td class="px-3 py-2 text-center text-md font-medium">
+                          <p>{{ row.account_head }}</p>
+                      </td>
+                      <td class="px-3 py-2 text-md font-medium">
+                          <span>{{ row.rate }}</span>
+                      </td>
+                      <td class="px-3 py-2 text-center text-md font-medium">
+                          <p>{{ row.tax_amount }}</p>
+                      </td>
+                      <td class="px-3 py-2 text-right text-md font-medium">
+                          <p>{{ row.total }}</p>
+                      </td>
+                  </tr>
+
+                  
+
+
+
+              </tbody>
+
+            </table>       
+          </div>
+
+        </div>
        
       </div>
 
@@ -205,6 +248,10 @@ export default {
     const supplier = ref([])
     const addressLine1 = ref([])
     const addressLine2 = ref([])
+    const total = ref('')
+    const total_taxes = ref('')
+    const total_advance = ref('')
+    
     const quote = createResource({
       url: 'go1_vendor.api.get_purchaseorder',
       method: 'get',
@@ -235,6 +282,11 @@ export default {
           // supplieraddress=QuotationDetails.supplier_address
           addressLine1.value=QuotationDetails.supplier_address
           addressLine2.value=QuotationDetails.address_display
+
+          total.value = QuotationDetails.total
+          total_taxes.value = QuotationDetails.total_taxes_and_charges
+          total_advance.value = QuotationDetails.total_advance
+
 
         }
         console.log('quote1', QuotationDetails)
@@ -335,6 +387,9 @@ export default {
 
 
     return {
+      total,
+      total_taxes,
+      total_advance,
       isSidebarCollapsed,
       name,
       inputValue,
